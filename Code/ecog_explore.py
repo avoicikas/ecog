@@ -27,7 +27,7 @@ plt.ion()
 abf = pyabf.ABF('../Data/2021_01_29_0007.abf')
 print(abf)
 
-n_channels = 3
+n_channels = abf.channelCount
 sampling_rate = abf.dataRate
 channel_names = ['F1', 'F2', 'STI']
 channel_types = ['eeg', 'eeg', 'stim']
