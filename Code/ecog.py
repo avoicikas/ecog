@@ -3,6 +3,7 @@ import mne
 import matplotlib.pyplot as plt
 import numpy as np
 import pathlib
+import pandas as pd
 
 def import_ecog(filename):
     abf = pyabf.ABF(filename)
@@ -32,7 +33,7 @@ def calc_itpc(data):
     return power, itc
 
 def plot_tf(tf, savename='test.png'):
-    tf.plot(
+    fig=tf.plot(
         #  mode="ratio",
         #  baseline=(0.2, 0.7),
         show=False,
@@ -40,22 +41,23 @@ def plot_tf(tf, savename='test.png'):
         combine="mean",
         cmap='viridis'
     )
-    plt.savefig(savename)
-    plt.close(plt.gcf())
+    fig.savefig(savename)
+    plt.close(fig)
 
 if __name__ == "__main__":
-   #  data_dir=pathlib.Path('../Data/ASSR_Mouse_Awake/2021_03_29/')
-   data_dir=pathlib.Path('./')
+   data_dir=pathlib.Path('../Data/data/')
    for ifile in data_dir.rglob('*abf'):
         filename = pathlib.Path.joinpath(ifile.parent, ifile.stem)
         data = import_ecog(str(ifile))
-        data.average().plot();
-        plt.savefig(f'{filename}-erp.png')
-        plt.close(plt.gcf())
-        data.copy().plot_psd(fmin=2, fmax=60);
-        plt.savefig(f'{filename}-psd.png')
-        plt.close(plt.gcf())
+        fig=data.average().plot(show=False);
+        fig.savefig(f'{filename}-erp.png')
+        plt.close(fig)
+        fig = data.copy().plot_psd(fmin=2, fmax=60, show=False);
+        fig.savefig(f'{filename}-psd.png')
+        plt.close(fig)
         power, itc = calc_itpc(data)
         plot_tf(itc, savename=f'{filename}-itpc.png')
+        for idx, ichan in enumerate(itc.ch_names):
+            pd.DataFrame(itc.data[idx].T, columns=itc.freqs,index=itc.times).to_csv(f'{filename}_{ichan}_itpc.csv')
         #  plot_tf(power, savename=f'{filename}-power.png')
         #  data.save(f'{filename}-epo.fif', overwrite='True')
