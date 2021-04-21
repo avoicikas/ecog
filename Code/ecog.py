@@ -59,5 +59,6 @@ if __name__ == "__main__":
         plot_tf(itc, savename=f'{filename}-itpc.png')
         for idx, ichan in enumerate(itc.ch_names):
             pd.DataFrame(itc.data[idx].T, columns=itc.freqs,index=itc.times).to_csv(f'{filename}_{ichan}_itpc.csv')
+            pd.DataFrame(power.data[idx].T, columns=power.freqs,index=power.times).to_csv(f'{filename}_{ichan}_power.csv')
         #  plot_tf(power, savename=f'{filename}-power.png')
         #  data.save(f'{filename}-epo.fif', overwrite='True')
