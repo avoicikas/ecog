@@ -5,6 +5,6 @@
 
 ## Usage
 
-- Place abf data in ./Data/data/
+- Place abf data in ./files/
 - run ecog.py
   - python ecog.py
