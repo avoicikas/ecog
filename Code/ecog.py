@@ -45,7 +45,7 @@ def plot_tf(tf, savename='test.png'):
     plt.close(fig)
 
 if __name__ == "__main__":
-   data_dir=pathlib.Path('../Data/data/')
+   data_dir=pathlib.Path('../files/')
    for ifile in data_dir.rglob('*abf'):
         filename = pathlib.Path.joinpath(ifile.parent, ifile.stem)
         data = import_ecog(str(ifile))
